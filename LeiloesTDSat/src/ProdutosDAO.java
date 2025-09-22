@@ -33,10 +33,10 @@ public class ProdutosDAO {
         try {
             if (prep != null) prep.close();
         } catch (SQLException e) {
-            // Tratar exceções ao fechar as conexões
+           
         }
     }
-           //conn = new conectaDAO().connectDB(); 
+           
     }
     
     public void venderProduto(int id){
@@ -55,7 +55,7 @@ public class ProdutosDAO {
         try {
             if (prep != null) prep.close();
         } catch (SQLException e) {
-            // Trate exceções ao fechar as conexões
+            
         }
     }
 }
@@ -80,17 +80,52 @@ public class ProdutosDAO {
 
     } catch (SQLException e) {
         System.out.println("Erro na listagem: " + e.getMessage());
-        return null; // Retornar nulo em caso de erro
+        return null;
     } finally {
         try {
             if (resultset != null) resultset.close();
             if (prep != null) prep.close();
         } catch (SQLException e) {
-            // Tratar exceções ao fechar as conexões
+          
         }
     }
 
+    
+    
     return listagem;
+}
+    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+    String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+    conn = new conectaDAO().connectDB();
+    ArrayList<ProdutosDTO> lista = new ArrayList<>();
+
+    try {
+        prep = conn.prepareStatement(sql);
+        resultset = prep.executeQuery();
+
+        while (resultset.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setValor(resultset.getInt("valor"));
+            produto.setStatus(resultset.getString("status"));
+            lista.add(produto);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Erro na listagem de produtos vendidos: " + e.getMessage());
+        return null;
+    } finally {
+        try {
+            if (resultset != null) resultset.close();
+            if (prep != null) prep.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            
+        }
+    }
+    return lista;
 }
         
     }
