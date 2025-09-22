@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
-
+import java.awt.HeadlessException;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -35,13 +27,12 @@ public class ProdutosDAO {
         prep.execute();
         JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 
-    } catch (Exception e) {
+    } catch (HeadlessException | SQLException e) {
         JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + e.getMessage());
     } finally {
         try {
             if (prep != null) prep.close();
-            if (conn != null) conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // Tratar exceções ao fechar as conexões
         }
     }
@@ -58,13 +49,12 @@ public class ProdutosDAO {
         prep.setInt(1, id); 
         prep.execute();
 
-    } catch (Exception e) {
+    } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
     } finally {
         try {
             if (prep != null) prep.close();
-            if (conn != null) conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // Trate exceções ao fechar as conexões
         }
     }
@@ -88,15 +78,14 @@ public class ProdutosDAO {
             listagem.add(produto);
         }
 
-    } catch (Exception e) {
+    } catch (SQLException e) {
         System.out.println("Erro na listagem: " + e.getMessage());
         return null; // Retornar nulo em caso de erro
     } finally {
         try {
             if (resultset != null) resultset.close();
             if (prep != null) prep.close();
-            if (conn != null) conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // Tratar exceções ao fechar as conexões
         }
     }
